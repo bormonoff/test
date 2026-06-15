@@ -1,0 +1,8 @@
+services:
+  bridge-api:
+    image: bormonoff/bridgeapi:1.1.1
+    container_name: ge-bridge-api
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - ./bridge-api/.vscode/.env

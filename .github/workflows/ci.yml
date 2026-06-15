@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v3
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+      - run: |
+          git config user.name "ge-b4n-ci[bot]"
+          git config user.email "my-bot[bot]@users.noreply.github.com"
+
+          sed -i "s|bormonoff/bridge-api:.*|bormonoff/bridgeapi:${{ github.ref_name }}|g" docker-compose.yml
+
+          git add .
+          git commit -m "Auto-generated changes" || exit 0
+          git push
