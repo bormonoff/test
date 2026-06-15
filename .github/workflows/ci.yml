@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  hello-world:
+  update-tag:
     runs-on: ubuntu-latest
     steps:
       - name: gen token
@@ -15,6 +15,10 @@ jobs:
         with:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - name: set tag base
+        run: |
+          TAG=${{ github.ref_name }}
+          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
         with:
           ref: main
@@ -23,7 +27,7 @@ jobs:
           git config user.name "ge-b4n-ci[bot]"
           git config user.email "my-bot[bot]@users.noreply.github.com"
 
-          sed -i "s|bormonoff/bridge-api:.*|bormonoff/bridgeapi:${{ github.ref_name }}|g" docker-compose.yml
+          sed -i "s|bormonoff/bridge-api:.*|bormonoff/bridgeapi:${{ env.VERSION }}|g" docker-compose.yml
 
           git add .
           git commit -m "Auto-generated changes" || exit 0
