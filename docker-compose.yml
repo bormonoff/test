@@ -1,6 +1,6 @@
 services:
   bridge-api:
-    image: bormonoff/bridgeapi:1.1.2
+    image: bormonoff/bridge-api:1.1.2
     container_name: ge-bridge-api
     restart: unless-stopped
     network_mode: host
