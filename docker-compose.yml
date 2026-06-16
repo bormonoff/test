@@ -1,6 +1,6 @@
 services:
   bridge-api:
-    image: geb4n/bridge-api:1.1.8
+    image: geb4n/bridge-api:v1.1.9
     container_name: ge-bridge-api
     restart: unless-stopped
     network_mode: host
